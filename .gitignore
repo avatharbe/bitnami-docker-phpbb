@@ -1,0 +1,11 @@
+# MySQL data directory (runtime state)
+/mysql/*
+!/mysql/.gitkeep
+
+# phpBB board source is user-provided and bulky — version only the Dockerfile
+/php/*
+!/php/Dockerfile
+!/php/.gitkeep
+
+# macOS
+.DS_Store

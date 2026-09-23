@@ -1,0 +1,47 @@
+networks:
+  phpbb3014:
+
+services:
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    container_name: phpbb3014-php
+    networks: [phpbb3014]
+    depends_on: [db]
+    volumes:
+      - ./php:/var/www/html
+    ports:
+      - "8014:80"
+    restart: unless-stopped
+
+  db:
+    image: mysql:5.7
+    platform: linux/amd64
+    container_name: phpbb3014-db
+    command: --sql-mode="" --default-authentication-plugin=mysql_native_password
+    networks: [phpbb3014]
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: phpbb
+      MYSQL_USER: phpbb
+      MYSQL_PASSWORD: phpbb
+    ports:
+      - "6034:3306"
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.3
+    container_name: phpbb3014-pma
+    networks: [phpbb3014]
+    depends_on: [db]
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 256M
+    ports:
+      - "8015:80"
+    restart: unless-stopped
