@@ -22,6 +22,10 @@ services:
     container_name: phpbb3014-db
     command: --sql-mode="" --default-authentication-plugin=mysql_native_password
     networks: [phpbb3014]
+    # If this container refuses to start due to a Docker Desktop file-sharing
+    # permission issue, replace the bind-mount below with a named volume,
+    # e.g. `phpbb3014-mysql-data:/var/lib/mysql` plus a top-level
+    # `volumes: { phpbb3014-mysql-data: }` block.
     volumes:
       - ./mysql:/var/lib/mysql
     environment:
